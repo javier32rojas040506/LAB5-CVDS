@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Start Page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script>
+        function validateForm() {
+          let id = document.forms["myForm"]["fid"].value;
+          console.log(id,isNaN(id));
+          if (id == "" || isNaN(id)) {
+            alert("El id debería ser un número");
+            return false;
+          }
+        }
+    </script>
+    <style>
+        input:invalid {
+          border: 2px dashed red;
+        }
+    </style>
+</head>
+<body>
+<h1>Hello World!</h1>
+<br>
+<form name="myForm" action="todo" onsubmit="return validateForm()" method="post">
+    Id: <input type="text" name="fid" required>
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>

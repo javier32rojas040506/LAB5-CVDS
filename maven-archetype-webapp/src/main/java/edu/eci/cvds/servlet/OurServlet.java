@@ -31,12 +31,43 @@ public class OurServlet extends HttpServlet {
             }
             else {
                 resp.setStatus(HttpServletResponse.SC_OK);
-                    Todo todo = Service.getTodo(Integer.parseInt(id));
-                    List<Todo> listTodo = new ArrayList();
-                    listTodo.add(todo);
-                    String table = Service.todosToHTMLTable(listTodo);
-                    responseWriter.write(table);
-                    responseWriter.flush();
+                Todo todo = Service.getTodo(Integer.parseInt(id));
+                List<Todo> listTodo = new ArrayList();
+                listTodo.add(todo);
+                String table = Service.todosToHTMLTable(listTodo);
+                responseWriter.write(table);
+                responseWriter.flush();
+            }
+        }
+        catch (NumberFormatException exceptionNumber) {
+            resp.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+        }
+        catch (MalformedURLException exceptionUrl) {
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+        catch (Exception ignored) {
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        }
+    }
+
+    @Override
+    protected  void doPost(HttpServletRequest req, HttpServletResponse resp) throws  ServletException, IOException {
+        try {
+            Writer responseWriter = resp.getWriter();
+            Optional<String> optName = Optional.ofNullable(req.getParameter("fid"));
+            String id = optName.isPresent() && !optName.get().isEmpty() ? optName.get() : "";
+            if (id.equals("")) {
+                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            }
+            else {
+                resp.sendRedirect("todo?id=" + id);
+                resp.setStatus(HttpServletResponse.SC_OK);
+                Todo todo = Service.getTodo(Integer.parseInt(id));
+                List<Todo> listTodo = new ArrayList();
+                listTodo.add(todo);
+                String table = Service.todosToHTMLTable(listTodo);
+                responseWriter.write(table);
+                responseWriter.flush();
             }
         }
         catch (NumberFormatException exceptionNumber) {
