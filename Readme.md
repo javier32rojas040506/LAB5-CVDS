@@ -42,28 +42,45 @@
     * Versión HTTP: 1.1
 
    Ahora, solicite (GET) el recurso /html. ¿Qué se obtiene como resultado?
-
+   
+   el contenido html de la pagina:
+   ![](img/telnet200OK.png)
+   este ser realizo con la version HTTP 1.0 ya que con la 1.1 tenemos una bad request
+   como se muestra a continuacion en kali 
+   ![](img/telnet3.png)
 ¡Muy bien!, ¡Acaba de usar del protocolo HTTP sin un navegador Web!. Cada vez que se usa un navegador, éste se conecta a un servidor HTTP, envía peticiones (del protocolo HTTP), espera el resultado de las mismas, y -si se trata de contenido HTML- lo interpreta y dibuja.
 
 5) Seleccione el contenido HTML de la respuesta y copielo al cortapapeles CTRL-SHIFT-C. Ejecute el comando wc (word count) para contar palabras con la opción -c para contar el número de caracteres:
 
 wc -c
-
+![](img/WC-C.png)
 Pegue el contenido del portapapeles con CTRL-SHIFT-V y presione CTRL-D (fin de archivo de Linux). Si no termina el comando wc presione CTRL-D de nuevo. No presione mas de dos veces CTRL-D indica que se termino la entrada y puede cerrarle la terminal. Debe salir el resultado de la cantidad de caracteres que tiene el contenido HTML que respondió el servidor.
 
 Claro está, las peticiones GET son insuficientes en muchos casos. Investigue: ¿Cuál es la diferencia entre los verbos GET y POST? ¿Qué otros tipos de peticiones existen?
 
+![](img/2-VerbosHTTP.png)
+
+Con GET me traigo un recurso con POST creo un elemento nuevo
+
 6) En la practica no se utiliza telnet para hacer peticiones a sitios web sino el comando curl con ayuda de la linea de comandos:
 
    curl www.httpbin.org
+   
+   ![](img/curl0.png)
 
    Utilice ahora el parámetro -v y con el parámetro -i:
 
    curl -v www.httpbin.org
-
+   ![](img/curl-v.png)
    curl -i www.httpbin.org
+   ![](img/curl-i.png)
 
 ¿Cuáles son las diferencias con los diferentes parámetros?
+![](img/curlHelp.png)
+como se evidencia en la imagen anterio:
+
+* -v se usa para la informacion sea mas diciente o detallada
+* -i nos trae los headers en la res puesta
 
 PARTE II. - HACIENDO UNA APLICACIÓN WEB DINÁMICA A BAJO NIVEL.
 En este ejercicio, va a implementar una aplicación Web muy básica, haciendo uso de los elementos de más bajo nivel de Java-EE (Enterprise Edition), con el fin de revisar los conceptos del protocolo HTTP. En este caso, se trata de un módulo de consulta de clientes Web que hace uso de una librería de acceso a datos disponible en un repositorio Maven local.
