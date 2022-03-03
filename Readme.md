@@ -29,11 +29,11 @@
       por parte del cliente
     * ¿Qué otros códigos de error existen?, ¿En qué caso se manejarán?
       tenemos los siguinete codigos
-      * 2xx codigos de exito
-      * 3xx redirecciones
-      * 4xx error en la peticion del cliente
-      * 5xx Internal del servidor 
-       Mas especificamnte la descripcion en esta imagen
+      * 2xx Códigos de éxito
+      * 3xx Redirecciones
+      * 4xx Error en la petición del cliente
+      * 5xx Error interno del servidor
+       Mas especificamnte la descripción en está imágen
       ![](img/CodigosHTTP.png)
       
 4) Realice una nueva conexión con telnet, esta vez a:
@@ -70,6 +70,8 @@ En este ejercicio, va a implementar una aplicación Web muy básica, haciendo us
 
 I. Para esto, cree un proyecto maven nuevo usando el arquetipo de aplicación Web estándar maven-archetype-webapp y realice lo siguiente:
 
+![](https://media.discordapp.net/attachments/692121020978692108/948671060604239903/unknown.png)
+
 Revise la clase SampleServlet incluida a continuacion, e identifique qué hace:
 
 package edu.eci.cvds.servlet;
@@ -104,12 +106,17 @@ Revise qué valor tiene el parámetro ‘urlPatterns’ de la anotación @WebSer
 
 En el pom.xml, modifique la propiedad "packaging" con el valor "war". Agregue la siguiente dependencia:
 
+![](https://media.discordapp.net/attachments/692121020978692108/948682067774963773/unknown.png)
+
 <dependency>
      <groupId>javax</groupId>
      <artifactId>javaee-web-api</artifactId>
      <version>7.0</version>
      <scope>provided</scope>
 </dependency>
+
+![](https://media.discordapp.net/attachments/692121020978692108/948682380204470302/unknown.png)
+
 y agregue la seccion build al final del tag project en el archivo pom.xml:
 
 <build>
@@ -170,19 +177,39 @@ y agregue la seccion build al final del tag project en el archivo pom.xml:
 </build>
 Revise en el pom.xml para qué puerto TCP/IP está configurado el servidor embebido de Tomcat (ver sección de plugins).
 
+![](https://media.discordapp.net/attachments/692121020978692108/948682679635832892/unknown.png)
+
 Compile y ejecute la aplicación en el servidor embebido Tomcat, a través de Maven con:
 
 mvn package
 mvn tomcat7:run
+
+![](https://media.discordapp.net/attachments/692121020978692108/948683360497205308/unknown.png)
+
 Abra un navegador, y en la barra de direcciones ponga la URL con la cual se le enviarán peticiones al ‘SampleServlet’. Tenga en cuenta que la URL tendrá como host ‘localhost’, como puerto, el configurado en el pom.xml y el path debe ser el del Servlet. Debería obtener un mensaje de saludo.
+
+![](https://media.discordapp.net/attachments/692121020978692108/948686357113495572/unknown.png)
 
 Observe que el Servlet ‘SampleServlet’ acepta peticiones GET, y opcionalmente, lee el parámetro ‘name’. Ingrese la misma URL, pero ahora agregando un parámetro GET (si no sabe como hacerlo, revise la documentación en http://www.w3schools.com/tags/ref_httpmethods.asp).
 
+![](https://media.discordapp.net/attachments/692121020978692108/948740624671199252/unknown.png)
+
 Busque el artefacto gson en el repositorio de maven y agregue la dependencia.
+
+![](https://media.discordapp.net/attachments/692121020978692108/948743787461627944/unknown.png)
 
 En el navegador revise la dirección https://jsonplaceholder.typicode.com/todos/1. Intente cambiando diferentes números al final del path de la url.
 
+- Con 1
+![](https://media.discordapp.net/attachments/692121020978692108/948746495476264980/unknown.png)
+- Con 2
+![](https://media.discordapp.net/attachments/692121020978692108/948746596349247499/unknown.png)
+- Con 3
+![](https://media.discordapp.net/attachments/692121020978692108/948746856031191070/unknown.png)
+
 Basado en la respuesta que le da el servicio del punto anterior, cree la clase edu.eci.cvds.servlet.model.Todo con un constructor vacío y los métodos getter y setter para las propiedades de los "To Dos" que se encuentran en la url indicada.
+
+![](https://media.discordapp.net/attachments/692121020978692108/948767342102478948/unknown.png)
 
 Utilice la siguiente clase para consumir el servicio que se encuentra en la dirección url del punto anterior:
 
@@ -268,4 +295,13 @@ Si se genera la excepcion MalformedURLException devolver el código de error int
 Para cualquier otra excepcion, devolver el código equivalente a requerimiento inválido.
 Una vez hecho esto, verifique el funcionamiento de la aplicación, recompile y ejecute la aplicación.
 
+![](https://media.discordapp.net/attachments/692121020978692108/948775300777541673/unknown.png?width=821&height=683)
+
 Intente hacer diferentes consultas desde un navegador Web para probar las diferentes funcionalidades.
+
+- Con 1
+  ![](https://media.discordapp.net/attachments/692121020978692108/948775708749086771/unknown.png)
+- Con 2
+  ![](https://media.discordapp.net/attachments/692121020978692108/948775656681001021/unknown.png)
+- Con 3
+  ![](https://media.discordapp.net/attachments/692121020978692108/948775762742370354/unknown.png)
