@@ -1,3 +1,5 @@
+### Francisco Javier Rojas
+### Juan Camilo Rojas
 # LABORATORIO 5 - MVC PRIMEFACES INTRODUCTION
 ### TALLER 5
 
@@ -95,35 +97,7 @@ I. Para esto, cree un proyecto maven nuevo usando el arquetipo de aplicación We
 
 Revise la clase SampleServlet incluida a continuacion, e identifique qué hace:
 
-package edu.eci.cvds.servlet;
-
-import java.io.IOException;
-import java.io.Writer;
-import java.util.Optional;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-@WebServlet(
-urlPatterns = "/helloServlet"
-)
-public class SampleServlet extends HttpServlet{
-static final long serialVersionUID = 35L;
-
-    @Override
-protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-Writer responseWriter = resp.getWriter();
-Optional<String> optName = Optional.ofNullable(req.getParameter("name"));
-String name = optName.isPresent() && !optName.get().isEmpty() ? optName.get() : "";
-
-       resp.setStatus(HttpServletResponse.SC_OK);
-       responseWriter.write("Hello" + name + "!");
-       responseWriter.flush();
-}
-}
-Revise qué valor tiene el parámetro ‘urlPatterns’ de la anotación @WebServlet, pues este indica qué URLs atiende las peticiones el servlet.
+atiende y reponde peticiones del verbo het bajo la url /helloServlet
 
 En el pom.xml, modifique la propiedad "packaging" con el valor "war". Agregue la siguiente dependencia:
 
@@ -140,62 +114,6 @@ En el pom.xml, modifique la propiedad "packaging" con el valor "war". Agregue la
 
 y agregue la seccion build al final del tag project en el archivo pom.xml:
 
-<build>
-   <plugins>
-       <plugin>
-           <groupId>org.apache.maven.plugins</groupId>
-           <artifactId>maven-compiler-plugin</artifactId>
-           <version>3.8.0</version>
-           <configuration>
-               <source>1.8</source>
-               <target>1.8</target>
-           </configuration>
-       </plugin>
-       <plugin>
-           <groupId>org.apache.maven.plugins</groupId>
-           <artifactId>maven-war-plugin</artifactId>
-           <version>2.3</version>
-           <configuration>
-               <failOnMissingWebXml>false</failOnMissingWebXml>
-           </configuration>
-       </plugin>
-       <plugin>
-           <groupId>org.apache.maven.plugins</groupId>
-           <artifactId>maven-dependency-plugin</artifactId>
-           <version>2.6</version>
-           <executions>
-               <execution>
-                   <phase>validate</phase>
-                   <goals>
-                       <goal>copy</goal>
-                   </goals>
-                   <configuration>
-                       <silent>true</silent>
-                       <artifactItems>
-                           <artifactItem>
-                               <groupId>javax</groupId>
-                               <artifactId>javaee-endorsed-api</artifactId>
-                               <version>7.0</version>
-                               <type>jar</type>
-                           </artifactItem>
-                       </artifactItems>
-                   </configuration>
-               </execution>
-           </executions>
-       </plugin>
-
-       <!-- Tomcat embedded plugin. -->
-       <plugin>
-           <groupId>org.apache.tomcat.maven</groupId>
-           <artifactId>tomcat7-maven-plugin</artifactId>
-           <version>2.2</version>
-           <configuration>
-               <port>8080</port>
-               <path>/</path>
-           </configuration>
-       </plugin>
-   </plugins>
-</build>
 Revise en el pom.xml para qué puerto TCP/IP está configurado el servidor embebido de Tomcat (ver sección de plugins).
 
 ![](https://media.discordapp.net/attachments/692121020978692108/948682679635832892/unknown.png)
@@ -203,6 +121,7 @@ Revise en el pom.xml para qué puerto TCP/IP está configurado el servidor embeb
 Compile y ejecute la aplicación en el servidor embebido Tomcat, a través de Maven con:
 
 mvn package
+
 mvn tomcat7:run
 
 ![](https://media.discordapp.net/attachments/692121020978692108/948683360497205308/unknown.png)
@@ -236,62 +155,8 @@ Utilice la siguiente clase para consumir el servicio que se encuentra en la dire
 
 package edu.eci.cvds.servlet;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.List;
 
-import com.google.gson.Gson;
-
-import edu.eci.cvds.servlet.model.Todo;
-
-public class Service {
-
-public static Todo getTodo(int id) throws MalformedURLException, IOException {
-URL urldemo = new URL("https://jsonplaceholder.typicode.com/todos/" + id);
-URLConnection yc = urldemo.openConnection();
-BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
-Gson gson = new Gson();
-Todo todo = gson.fromJson(in, Todo.class);
-in.close();
-return todo;
-}
-
-private static String todoToHTMLRow(Todo todo) {
-return new StringBuilder("<tr>")
-.append("<td>")
-.append(todo.getUserId())
-.append("</td><td>")
-.append(todo.getId())
-.append("</td><td>")
-.append(todo.getTitle())
-.append("</td><td>")
-.append(todo.getCompleted())
-.append("</td>")
-.append("</tr>")
-.toString();
-}
-
-public static String todosToHTMLTable(List<Todo> todoList) {
-StringBuilder stringBuilder = new StringBuilder("<table>")
-.append("<tr>")
-.append("<th>User Id</th>")
-.append("<th>Id</th>")
-.append("<th>Title</th>")
-.append("<th>Completed</th>")
-.append("</tr>");
-
-       for (Todo todo : todoList) {
-           stringBuilder.append(todoToHTMLRow(todo));
-       }
-
-       return stringBuilder.append("</table>").toString();
-}
-}
-Cree una clase que herede de la clase HttpServlet (similar a SampleServlet), y para la misma sobrescriba el método heredado doGet. Incluya la anotación @Override para verificar –en tiempo de compilación- que efectivamente se esté sobreescribiendo un método de las superclases.
+11. Cree una clase que herede de la clase HttpServlet (similar a SampleServlet), y para la misma sobrescriba el método heredado doGet. Incluya la anotación @Override para verificar –en tiempo de compilación- que efectivamente se esté sobreescribiendo un método de las superclases.
 
 Para indicar en qué URL el servlet interceptará las peticiones GET, agregue al método la anotación @WebServlet, y en dicha anotación, defina la propiedad urlPatterns, indicando la URL (que usted defina) a la cual se asociará el servlet.
 
@@ -321,8 +186,130 @@ Una vez hecho esto, verifique el funcionamiento de la aplicación, recompile y e
 Intente hacer diferentes consultas desde un navegador Web para probar las diferentes funcionalidades.
 
 - Con 1
+  
   ![](https://media.discordapp.net/attachments/692121020978692108/948775708749086771/unknown.png)
 - Con 2
+  
   ![](https://media.discordapp.net/attachments/692121020978692108/948775656681001021/unknown.png)
 - Con 3
+  
   ![](https://media.discordapp.net/attachments/692121020978692108/948775762742370354/unknown.png)
+
+
+## PARTE IV. - FRAMEWORKS WEB MVC – JAVA SERVER FACES / PRIME FACES
+En este ejercicio, usted va a desarrollar una aplicación Web basada en el marco JSF, y en una de sus implementaciones más usadas: PrimeFaces.
+
+Escriba una aplicación web que utilice PrimeFaces para calcular la media, la moda, la desviación estándar y varianza de un conjunto de N números reales. Este conjunto de N números reales deben ser ingresados por el usuario de manera que puedan ser utilizados para los cálculos.
+
+
+
+
+
+
+
+Al proyecto Maven, debe agregarle las dependencias mas recientes de javax.javaee-api, com.sun.faces.jsf-api, com.sun.faces.jsf-impl, javax.servlet.jstl y Primefaces (en el archivo pom.xml).
+
+![](img/pomIV.png)
+
+![](img/pomIV1.png)
+Para que configure automáticamente el descriptor de despliegue de la aplicación (archivo web.xml), de manera que el framework JSF se active al inicio de la aplicación, en el archivo web.xml agregue la siguiente configuración:
+
+![](img/webXML.png)
+Revise cada una de las configuraciones agregadas anteriormente para saber qué hacen y por qué se necesitan. Elimine las que no se necesiten.
+
+Ahora, va a crear un Backing-Bean de sesión, el cual, para cada usuario, mantendrá de lado del servidor las siguientes propiedades:
+
+El conjunto de datos ingresados por el usuario.
+
+Los resultados de las operaciones.
+
+La cantidad de números ingresados por el usuario.
+
+Para hacer esto, cree una clase que tenga:
+el constructor por defecto (sin parámetros)
+los métodos get/set necesarios dependiendo si las propiedades son de escritura o lectura
+coloque las anotaciones:
+@ManagedBean, incluyendo el nombre: @ManagedBean(name = "calculadoraBean").
+@ApplicationScoped.
+A la implementación de esta clase, agregue los siguientes métodos:
+calculateMean: Debe recibir como parámetro el listado de valores y retornar el promedio de los números en ella.
+calculateStandardDeviation: Debe recibir como parámetro el listado de valores y retornar el la desviación estandar de los números en ella.
+calculateVariance: Debe recibir como parámetro el listado de valores y retornar la varianza de los números en ella.
+calculateMode: Debe recibir como parámetro el listado de valores y retornar la moda de los números en ella.
+restart: Debe volver a iniciar la aplicación (Borrar el campo de texto para que el usuario agregue los datos).
+Cree una página XHTML, de nombre calculadora.xhtml (debe quedar en la ruta src/main/webapp). Revise en la página 13 del manual de PrimeFaces, qué espacios de nombres XML requiere una página de PrimeFaces y cuál es la estructura básica de la misma.
+
+Con base en lo anterior, agregue un formulario con identificador calculadora_form con el siguiente contenido básico:
+
+<h:body>
+<h:form id="calculadora_form">
+
+</h:form>
+</h:body>
+Al formulario, agregue:
+
+Un elemento de tipo <p:outputLabel> para el resultado de la moda, sin embargo, este elemento se debe ocultar. Para ocultarlo, se puede agregar el estilo display: none; al elemento. Una forma de hacerlo es por medio de la propiedad style.
+En una aplicacion real, no se debería tener este elemento, solo se crea con el fin de simplificar una prueba futura.
+Un elemento <p:inputText>para que el usuario ingrese los números. (Tenga en cuenta que una opción para separar los números es con “;” aunque no necesariamente debe hacerlo así)
+
+Por ejemplo:
+
+2; 3.5; 4.8; 5.1
+
+Un elemento de tipo <p:outputLabel> para mostrar cada una de las operaciones resultantes. Y asocie dichos elementos al BackingBean de sesión a través de su propiedad value, y usando como referencia el nombre asignado: value="#{calculadoraBean.nombrePropiedad}"
+
+Al formulario, agregue dos botones de tipo <p:commandButton>, cuatro para enviar la lista de números ingresados y ver el calculo de cada valor, y otro para reiniciar el juego.
+
+El botón de Calculo de valores debe tener asociado a su propiedad update el nombre del formulario en el que se agregaron los campos antes descritos, de manera que al hacer clic, se ejecute un ciclo de JSF y se refresque la vista.
+
+Debe tener también una propiedad actionListener con la cual se le indicará que, al hacer clic, se ejecutará el método CalculateXXX, creado en el backing-bean de sesión:
+
+<p:commandButton update="calculadora_form" actionListener="#{calculadoraBean.calculateXXX}">...
+El botón de reiniciar juego tendrá las mismas propiedades de update y actionListener del otro con el valor correspondiente:
+
+<p:commandButton update="…" actionListener="…">
+Para verificar el funcionamiento de la aplicación, agregue el plugin tomcat-runner dentro de los plugins de la fase de construcción (build). Tenga en cuenta que en la configuración del plugin se indica bajo que ruta quedará la aplicación:
+
+mvn package
+
+mvn tomcat7:run
+
+![](img/xhtml.png)
+
+Si no hay errores, la aplicación debería quedar accesible en la URL: http://localhost:8080/faces/calculadora.xhtml
+
+![](img/xhtml1.png)
+![](img/xhtml2.png)
+Si todo funcionó correctamente, realice las siguientes pruebas:
+
+a) Abra la aplicación en un explorador. Realice algunas pruebas de aceptación con la aplicación.
+
+
+b) Abra la aplicación en dos computadores diferentes. Si no dispone de uno, hágalo en dos navegadores diferentes (por ejemplo Chrome y Firefox; incluso se puede en un único navegador usando una ventana normal y una ventana de incógnito / privada). Haga cinco intentos en uno, y luego un intento en el otro. ¿Qué valor tiene cada uno?
+
+![](img/test.png)
+![](img/test1.png)
+c) Aborte el proceso de Tomcat-runner haciendo Ctrl+C en la consola, y modifique el código del backing-bean de manera que use la anotación @SessionScoped en lugar de @ApplicationScoped. Reinicie la aplicación y repita el ejercicio anterior.
+   *  Dado la anterior, ¿Cuál es la diferencia entre los backing-beans de sesión y los de aplicación?
+![](img/10.png)
+      se crea una instacia diferente es dcir tenemos un programa con variables reseteadas mientras que en application las variables siguen vigentes entre instancias
+      
+d)Por medio de las herramientas de desarrollador del explorador (Usando la tecla "F12" en la mayoría de exploradores):
+   * Ubique el código HTML generado por el servidor.
+     ![](img/10da.png)
+   * Busque el elemento oculto, que contiene el número generado aleatoriamente.
+   * En la sección de estilos, deshabilite el estilo que oculta el elemento para que sea visible.
+   * Observe el cambio en la página, cada vez que se realiza un cambio en el estilo.
+   * Revise qué otros estilos se pueden agregar a los diferentes elementos y qué efecto tienen en la visualización de la página.
+   * Actualice la página. Los cambios de estilos realizados desaparecen, pues se realizaron únicamente en la visualización, la respuesta del servidor sigue siendo la misma, ya que el contenido de los archivos allí almacenados no se ha modificado.
+   * Revise qué otros cambios se pueden realizar y qué otra información se puede obtener de las herramientas de desarrollador.
+     ![](img/10d1234.png)
+     ![](img/d10end.png)
+11) Para facilitar los intentos del usuario, se agregará una lista de los últimos valores ingresados:
+
+a) Agregue en el Backing-Bean, una propiedad que contenga una lista de valores ingresados por el usuario.
+
+b) Cuando se reinicie la aplicación, limpie el contenido de la lista.
+
+c) Busque cómo agregar una tabla a la página, cuyo contenido sea la lista de listas de números.
+
