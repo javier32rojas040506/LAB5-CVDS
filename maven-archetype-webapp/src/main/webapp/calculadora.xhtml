@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3c.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+<h:head></h:head>
+<h:body>
+    <h:form id="calculadora_form">
+        <h:panelGrid columns="3">
+            <p:outputLabel value="Datos" style="display: none;"/>
+            <p:inputText type="text" binding="#{input}"/>
+            <p:commandButton value="enviar" update="calculadora_form" actionListener="#{calculatorBB.setNumbers(input.value)}"/>
+        </h:panelGrid>
+        <h:panelGrid columns="2">
+            <p:outputLabel value="#{calculatorBB.mean}"/>
+            <p:commandButton value="Calcular Media" update="calculadora_form" actionListener="#{calculatorBB.calculateMean(input.value)}"/>
+            <p:outputLabel value="#{calculatorBB.mode}"/>
+            <p:commandButton value="Calcular Moda" update="calculadora_form" actionListener="#{calculatorBB.calculateMode(input.value)}"/>
+            <p:outputLabel value="#{calculatorBB.standardDev}"/>
+            <p:commandButton value="Calcular desciavion Estandar" update="calculadora_form" actionListener="#{calculatorBB.calculateStandardDeviation(input.value)}"/>
+            <p:outputLabel value="#{calculatorBB.variance}"/>
+            <p:commandButton value="Calcular varianza" update="calculadora_form" actionListener="#{calculatorBB.calculateVariance(input.value)}"/>
+            <p:commandButton value="Restart" update="calculadora_form" actionListener="#{calculatorBB.restart}"/>
+        </h:panelGrid>
+        <h:panelGrid columns="2">
+            <p:outputLabel value="2; 3.5; 4.8; 5.1   "/>
+            <p:outputLabel value="10;20;20;15"/>
+            <p:outputLabel value="2; 3.5; 4.8; 5.1    "/>
+            <p:outputLabel value="10;20;20;15"/>
+        </h:panelGrid>
+    </h:form>
+</h:body>
+</html>
