@@ -3,6 +3,8 @@ package edu.eci.cvds.servlet;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @ManagedBean(name = "calculatorBB")
 @SessionScoped
@@ -12,10 +14,9 @@ public class CalculatorBB {
     public double mode;
     public double standardDev;
     public double variance;
-    public ArrayList<Double> numSubmited;
-
+    public ArrayList<String> numSubmited;
     public CalculatorBB() {
-        numSubmited = new ArrayList<Double>();
+        numSubmited = new ArrayList<String>();
     }
     public void setNumbers(String list) {
         numbers = new ArrayList<Double>();
@@ -24,23 +25,25 @@ public class CalculatorBB {
             for (String stringNum:arrayString) {
                 numbers.add(Double.parseDouble(stringNum));
             }
-            setNumSubmited(numbers);
+            setNumSubmited(list);
         }catch (Exception e)
         {
             System.out.println("se rompio");
             System.out.println(e.getMessage());
         }
     }
-    public void setNumSubmited(ArrayList<Double> list){
-        for (Double num:list) {
-            if(!numSubmited.contains(num)) {
-                numSubmited.add(num);
-            }
+    public void setNumSubmited(String list){
+        if(!numSubmited.contains(list)) {
+            numSubmited.add(list);
         }
     }
 
     public double getMean(){
         return mean;
+    }
+
+    public ArrayList<String> getNumSubmited() {
+        return numSubmited;
     }
 
     public void setMean(double mean) {
@@ -125,7 +128,7 @@ public class CalculatorBB {
 
     public void restart(){
         numbers = new ArrayList<Double>();
-        numSubmited = new ArrayList<Double>();
+        numSubmited = new ArrayList<String>();
         setVariance(0);
         setStandardDev(0);
         setMean(0);
